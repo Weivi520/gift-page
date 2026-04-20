@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给你的一封信</title>
+    <style>
+        /* --- 样式部分 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fce4ec; /* 粉色背景 */
+            font-family: 'Microsoft YaHei', sans-serif;
+            overflow: hidden;
+        }
+
+        /* 信封主体 */
+        #envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        #envelope:hover {
+            transform: scale(1.05);
+        }
+
+        /* 信封上的文字 */
+        #envelope::before {
+            content: "点击开启信件";
+            font-size: 20px;
+            color: #ff9a9e;
+            font-weight: bold;
+        }
+
+        /* 信纸区域 (初始隐藏) */
+        #letter {
+            position: absolute;
+            width: 350px;
+            height: 500px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            box-sizing: border-box;
+            text-align: left;
+            overflow-y: auto; /* 内容过多时滚动 */
+            opacity: 0; /* 默认透明 */
+            transform: translateY(50px); /* 默认向下偏移 */
+            transition: all 1s ease; /* 动画过渡 */
+            z-index: 5;
+            display: none; /* 默认不显示，防止点击穿透 */
+        }
+
+        /* 信纸里的文字样式 */
+        .text-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+            white-space: pre-wrap; /* 保留换行符 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 信封 -->
+    <div id="envelope" onclick="openLetter()"></div>
+
+    <!-- 信纸 -->
+    <div id="letter">
+        <div id="typewriter" class="text-content"></div>
+    </div>
+
+    <!-- 背景音乐 (确保 music.mp3 在同级目录) -->
+    <audio id="bgMusic" src="music.mp3"></audio>
+
+    <script>
+        // 这里的代码是完全本地化的，不需要联网
+
+        // 信件内容（你可以修改这里面的文字）
+        const letterText = `亲爱的 [名字]：
+
+展信佳。
+
+当你打开这封信的时候，
+也许窗外正下着雨，
+也许阳光正好。
+
+无论此刻你在哪里，
+我都希望这段代码能传达我的心意。
+
+祝你天天开心！
+
+—— 来自你的程序员朋友`;
+
+        function openLetter() {
+            const envelope = document.getElementById('envelope');
+            const letter = document.getElementById('letter');
+            const music = document.getElementById('bgMusic');
+
+            // 1. 隐藏信封
+            envelope.style.display = 'none';
+
+            // 2. 显示信纸
+            letter.style.display = 'block';
+
+            // 3. 触发一点点延迟，让 CSS 动画生效
+            setTimeout(() => {
+                letter.style.opacity = '1';
+                letter.style.transform = 'translateY(0)';
+            }, 50);
+
+            // 4. 播放音乐
+            music.play().catch(e => console.log("用户未交互，音乐等待播放"));
+
+            // 5. 开始打字效果
+            typeWriter();
+        }
+
+        // 简单的原生 JS 打字机效果 (替代了复杂的 Typed.js)
+        function typeWriter() {
+            const typewriterElement = document.getElementById('typewriter');
+            let i = 0;
+            const speed = 50; // 打字速度，越小越快
+
+            function type() {
+                if (i < letterText.length) {
+                    typewriterElement.innerHTML += letterText.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                    // 自动滚动到底部
+                    typewriterElement.scrollTop = typewriterElement.scrollHeight;
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>
