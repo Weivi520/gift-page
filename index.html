@@ -122,15 +122,15 @@
 
             // 2. 显示信纸
             letter.style.display = 'block';
-
+            
+            // 4. 播放音乐
+            music.play().catch(e => console.log("用户未交互，音乐等待播放"));
+            
             // 3. 触发一点点延迟，让 CSS 动画生效
             setTimeout(() => {
                 letter.style.opacity = '1';
                 letter.style.transform = 'translateY(0)';
             }, 50);
-
-            // 4. 播放音乐
-            music.play().catch(e => console.log("用户未交互，音乐等待播放"));
 
             // 5. 开始打字效果
             typeWriter();
