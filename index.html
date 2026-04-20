@@ -74,6 +74,11 @@
     </style>
 </head>
 <body>
+    <!-- 在这里添加这一行代码 -->
+    <button id="startMusicBtn" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 999; padding: 10px 20px; font-size: 16px; cursor: pointer;">
+        🎵 点击播放音乐
+    </button>
+
 
     <!-- 信封 -->
     <div id="envelope" onclick="openLetter()"></div>
@@ -87,13 +92,7 @@
     <audio id="bgMusic" src="music.mp3"></audio>
 
     <script>
-        // 在页面加载时，监听一次点击，用来“唤醒”音频
-        document.body.addEventListener('click', function() {
-            const music = document.getElementById('bgMusic');
-            if (music.paused) {
-            music.play().catch(() => {});
-            }
-        }, { once: true }); // { once: true } 表示这个监听器只执行一次
+
         // 这里的代码是完全本地化的，不需要联网
 
         // 信件内容（你可以修改这里面的文字）
@@ -112,6 +111,24 @@
 
 —— 来自你的程序员朋友`;
 
+        // --- 在这里添加这段代码 ---
+        const startBtn = document.getElementById('startMusicBtn');
+        const bgMusic = document.getElementById('bgMusic'); // 获取音乐元素
+        
+        startBtn.addEventListener('click', function() {
+            // 1. 尝试播放音乐
+            bgMusic.play()
+                .then(() => {
+                    console.log("音乐播放成功");
+                    // 2. 播放成功后，隐藏这个按钮
+                    startBtn.style.display = 'none';
+                })
+                .catch((error) => {
+                    console.log("播放失败，请再次点击", error);
+                    alert("浏览器拦截了播放，请再点一次按钮");
+                });
+        });
+        // ---------------------------
         function openLetter() {
             const envelope = document.getElementById('envelope');
             const letter = document.getElementById('letter');
@@ -124,7 +141,7 @@
             letter.style.display = 'block';
             
             // 4. 播放音乐
-            music.play().catch(e => console.log("用户未交互，音乐等待播放"));
+            //music.play().catch(e => console.log("用户未交互，音乐等待播放"));
             
             // 3. 触发一点点延迟，让 CSS 动画生效
             setTimeout(() => {
