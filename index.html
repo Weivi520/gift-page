@@ -88,12 +88,12 @@
 
     <script>
         // 在页面加载时，监听一次点击，用来“唤醒”音频
-document.body.addEventListener('click', function() {
-    const music = document.getElementById('bgMusic');
-    if (music.paused) {
-        music.play().catch(() => {});
-    }
-}, { once: true }); // { once: true } 表示这个监听器只执行一次
+        document.body.addEventListener('click', function() {
+            const music = document.getElementById('bgMusic');
+            if (music.paused) {
+            music.play().catch(() => {});
+            }
+        }, { once: true }); // { once: true } 表示这个监听器只执行一次
         // 这里的代码是完全本地化的，不需要联网
 
         // 信件内容（你可以修改这里面的文字）
